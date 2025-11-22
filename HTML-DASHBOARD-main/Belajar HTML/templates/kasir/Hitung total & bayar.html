@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Kasir - Input Penjualan | Almeera Bakery</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        background-color: #f5f5f5;
+        height: 100vh;
+      }
+
+      /* SIDEBAR */
+      .sidebar {
+        background-color: #1c1c1c;
+        color: white;
+        width: 240px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 25px 15px;
+      }
+
+      .sidebar .logo {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .sidebar .logo img {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        margin-bottom: 10px;
+      }
+
+      .sidebar .logo h2 {
+        font-weight: 700;
+        line-height: 1.2;
+      }
+
+      .sidebar a {
+        text-decoration: none;
+        color: white;
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        text-align: left;
+        margin: 5px 0;
+        display: flex;
+        align-items: center;
+        font-size: 1em;
+        gap: 10px;
+        transition: 0.2s;
+      }
+
+      .sidebar a:hover {
+        background-color: #3a7ffd;
+        color: #fff;
+      }
+
+      .sidebar a img {
+        width: 22px;
+        height: 22px;
+        object-fit: contain;
+      }
+
+      .sidebar hr {
+        border: 0.5px solid #555;
+        width: 90%;
+        margin: 20px 0;
+      }
+
+      /* MAIN CONTENT */
+      .main {
+        flex-grow: 1;
+        padding: 20px 40px;
+        background-color: #fdfdfd;
+        overflow-y: auto;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #ccc;
+        padding-bottom: 10px;
+      }
+
+      header h1 {
+        font-weight: 700;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .user-info img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      /* FORM PENJUALAN */
+      .container {
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        padding: 30px;
+        margin-top: 30px;
+      }
+
+      .container h2 {
+        text-align: center;
+        color: #3a7ffd;
+        font-size: 1.8em;
+        font-weight: 700;
+        margin-bottom: 25px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+
+      th,
+      td {
+        border: 2px solid black;
+        padding: 10px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #3a7ffd;
+        color: white;
+      }
+
+      input,
+      button {
+        padding: 8px 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 1em;
+      }
+
+      button {
+        background: #3a7ffd;
+        color: white;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      button:hover {
+        background: #0056b3;
+      }
+
+      .flex {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+      }
+
+      .flex label {
+        min-width: 120px;
+      }
+
+      .hasil {
+        background-color: #f0f8ff;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="logo">
+        <img
+          src="{{ url_for('static', filename='images/logo.png') }}"
+          alt="Logo Almeera Bakery"
+        />
+        <h2>Almeera<br />Bakery</h2>
+      </div>
+
+      <a href="{{ url_for('data_produksi_kasir') }}">
+        <img
+          src="{{ url_for('static', filename='images/menu1.png') }}"
+          alt="Menu Data"
+        />
+        Data Produksi
+      </a>
+      <a href="{{ url_for('Hitung_Total') }}" style="background-color: #3a7ffd">
+        <img
+          src="{{ url_for('static', filename='images/menu4.png') }}"
+          alt="Menu Hitung"
+        />
+        Input Penjualan
+      </a>
+      <hr />
+      <a href="{{ url_for('logout') }}">
+        <img
+          src="{{ url_for('static', filename='images/menu3.png') }}"
+          alt="Logout"
+        />
+        Keluar
+      </a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+      <header>
+        <h1>Input Penjualan</h1>
+        <div class="user-info">
+          <strong>{{ user }}</strong>
+          <img
+            src="{{ url_for('static', filename='images/bergas.png') }}"
+            alt="Kasir"
+          />
+        </div>
+      </header>
+
+      <div class="container">
+        <h2>🛒 Input Penjualan</h2>
+
+        <form id="penjualanForm">
+          <table>
+            <tr>
+              <th>Jenis Roti</th>
+              <th>Harga Satuan (Rp)</th>
+              <th>Jumlah Dibeli</th>
+            </tr>
+
+            {% for r in roti_list %}
+            <tr>
+              <td>{{ r.Nama_Roti }}</td>
+              <td>
+                <input
+                  type="number"
+                  value="{{ r.Harga }}"
+                  class="harga"
+                  data-id="{{ r.idRoti }}"
+                  readonly
+                  style="background: #e9e9e9; cursor: not-allowed"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  value="0"
+                  class="jumlah"
+                  data-id="{{ r.idRoti }}"
+                />
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+          <div class="flex">
+            <label>Total Harga:</label>
+            <span id="totalHarga">Rp 0</span>
+          </div>
+
+          <div class="flex">
+            <label>Bayar:</label>
+            <input
+              type="text"
+              id="uang_dibayar"
+              name="uang_dibayar"
+              oninput="formatRupiah(this)"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="flex">
+            <label>Kembalian:</label>
+            <span id="kembalian">Rp 0</span>
+          </div>
+
+          <button type="button" onclick="hitungTotal()">Hitung Total</button>
+          <button type="button" onclick="simpanTransaksi()">
+            Simpan Transaksi
+          </button>
+        </form>
+
+        <div id="hasil" class="hasil" style="display: none">
+          <h3>💰 Hasil Pembayaran</h3>
+          <p id="hasilTotal"></p>
+          <p id="hasilBayar"></p>
+          <p id="hasilKembali"></p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function hitungTotal() {
+        let total = 0;
+
+        document.querySelectorAll("tr").forEach((row) => {
+          const hargaInput = row.querySelector(".harga");
+          const qtyInput = row.querySelector(".jumlah");
+
+          if (hargaInput && qtyInput) {
+            const harga = parseInt(hargaInput.value) || 0;
+            const qty = parseInt(qtyInput.value) || 0;
+            total += harga * qty;
+          }
+        });
+
+        // Ambil uang dibayar & bersihkan format Rp / titik / koma
+        let bayarRaw = document
+          .getElementById("uang_dibayar")
+          .value.replace(/[^0-9]/g, "");
+        let bayar = parseInt(bayarRaw) || 0;
+
+        let kembali = bayar - total;
+
+        document.getElementById("totalHarga").innerText =
+          "Rp " + total.toLocaleString("id-ID");
+        document.getElementById("kembalian").innerText =
+          "Rp " + (kembali > 0 ? kembali.toLocaleString("id-ID") : 0);
+
+        // Simpan nilai global untuk simpan transaksi
+        window.totalHarga = total;
+        window.kembalian = kembali;
+        window.bayar = bayar;
+      }
+
+      function formatRupiah(el) {
+        let angka = el.value.replace(/[^0-9]/g, "");
+        el.value = "Rp " + angka.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+
+      function simpanTransaksi() {
+        if (!window.totalHarga) {
+          alert("⚠️ Hitung total dulu sebelum simpan transaksi!");
+          return;
+        }
+
+        let items = [];
+
+        document.querySelectorAll("tr").forEach((row) => {
+          const hargaInput = row.querySelector(".harga");
+          const qtyInput = row.querySelector(".jumlah");
+
+          if (hargaInput && qtyInput) {
+            const idRoti = hargaInput.dataset.id;
+            const harga = parseInt(hargaInput.value) || 0;
+            const qty = parseInt(qtyInput.value) || 0;
+            const subtotal = harga * qty;
+
+            if (qty > 0) {
+              items.push({
+                idRoti: parseInt(idRoti),
+                qty: qty,
+                subtotal: subtotal,
+              });
+            }
+          }
+        });
+
+        fetch("/simpan_transaksi", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            total: window.totalHarga,
+            bayar: window.bayar,
+            kembalian: window.kembalian,
+            items: items,
+          }),
+        })
+          .then((res) => res.json())
+          .then(() => {
+            alert("✅ Transaksi Berhasil Disimpan!");
+            location.reload();
+          });
+      }
+    </script>
+  </body>
+</html>

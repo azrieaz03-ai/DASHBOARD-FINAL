@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Kasir - Data Produksi | Almeera Bakery</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        background-color: #f5f5f5;
+        height: 100vh;
+      }
+
+      /* SIDEBAR */
+      .sidebar {
+        background-color: #1c1c1c;
+        color: white;
+        width: 240px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 25px 15px;
+      }
+
+      .sidebar .logo {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .sidebar .logo img {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        margin-bottom: 10px;
+      }
+
+      .sidebar .logo h2 {
+        font-weight: 700;
+        line-height: 1.2;
+      }
+
+      .sidebar a {
+        text-decoration: none;
+        color: white;
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        text-align: left;
+        margin: 5px 0;
+        display: flex;
+        align-items: center;
+        font-size: 1em;
+        gap: 10px;
+        transition: 0.2s;
+      }
+
+      .sidebar a:hover {
+        background-color: #3a7ffd;
+        color: #fff;
+      }
+
+      .sidebar a img {
+        width: 22px;
+        height: 22px;
+        object-fit: contain;
+      }
+
+      .sidebar hr {
+        border: 0.5px solid #555;
+        width: 90%;
+        margin: 20px 0;
+      }
+
+      /* MAIN CONTENT */
+      .main {
+        flex-grow: 1;
+        padding: 20px 40px;
+        background-color: #fdfdfd;
+        overflow-y: auto;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #ccc;
+        padding-bottom: 10px;
+      }
+
+      header h1 {
+        font-weight: 700;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .user-info img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      /* DATA PRODUKSI SECTION */
+      .data-container {
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        padding: 30px;
+        margin-top: 30px;
+      }
+
+      .data-container h2 {
+        text-align: center;
+        font-size: 1.8em;
+        font-weight: 700;
+        margin-bottom: 25px;
+      }
+
+      .data-container h2 span {
+        color: #3a7ffd;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      th,
+      td {
+        border: 2px solid black;
+        padding: 10px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #3a7ffd;
+        color: white;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Almeera Bakery" />
+        <h2>Almeera<br />Bakery</h2>
+      </div>
+
+      <a href="{{ url_for('data_produksi_kasir') }}">
+        <img src="{{ url_for('static', filename='images/menu1.png') }}" alt="Menu Data" />
+        Data Produksi
+      </a>
+      <a href="{{ url_for('Hitung_Total') }}">
+        <img src="{{ url_for('static', filename='images/menu4.png') }}" alt="Menu Hitung" />
+        Hitung Total & Bayar
+      </a>
+      <hr />
+      <a href="{{ url_for('logout') }}">
+        <img src="{{ url_for('static', filename='images/menu3.png') }}" alt="Logout" />
+        Keluar
+      </a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+      <header>
+        <h1>Data Produksi Hari Ini</h1>
+        <div class="user-info">
+          <strong>{{ user }}</strong>
+          <img src="{{ url_for('static', filename='images/bergas.png') }}" alt="Kasir" />
+        </div>
+      </header>
+
+      <div class="data-container">
+        <h2>DATA <span>PRODUKSI</span></h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Jenis Roti</th>
+              <th>Produksi</th>
+              <th>Terjual</th>
+              <th>Stok</th>
+              <th>Uang Masuk</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <!-- Data hari ini akan diisi via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+<script>
+  // Data dari Flask (sudah berupa list of objects)
+  const DATA_HARI_INI = {{ data|tojson }};
+
+  function renderTable() {
+    const tbody = document.getElementById("table-body");
+    tbody.innerHTML = '';
+
+    DATA_HARI_INI.forEach(item => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${item.Nama}</td>
+        <td>${item.Total_Produksi}</td>
+        <td>${item.Total_Terjual}</td>
+        <td>${item.Stok_Aktual}</td>
+        <td>Rp ${item.Total_Uang.toLocaleString()}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  renderTable();
+</script>
+  </body>
+</html>

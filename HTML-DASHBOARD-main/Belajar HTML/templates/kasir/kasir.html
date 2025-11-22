@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dashboard Kasir - Almeera Bakery</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        background-color: #f0f4ff;
+        height: 100vh;
+      }
+
+      /* SIDEBAR */
+      .sidebar {
+        background-color: #000000;
+        color: white;
+        width: 240px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 25px 15px;
+      }
+
+      .sidebar .logo {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .sidebar .logo img {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        margin-bottom: 10px;
+      }
+
+      .sidebar .logo h2 {
+        font-family: "Poppins", sans-serif;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+
+      .sidebar a {
+        text-decoration: none;
+        color: white;
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        text-align: left;
+        margin: 5px 0;
+        display: flex;
+        align-items: center;
+        font-size: 1em;
+        gap: 10px;
+      }
+
+      .sidebar a:hover {
+        background-color: #3a7ffd;
+        color: white;
+      }
+
+      .sidebar a img {
+        width: 22px;
+        height: 22px;
+        object-fit: contain;
+      }
+
+      .sidebar hr {
+        border: 0.5px solid #4a5aa8;
+        width: 90%;
+        margin: 20px 0;
+      }
+
+      /* MAIN CONTENT */
+      .main {
+        flex-grow: 1;
+        padding: 20px 40px;
+        background-color: #ffffff;
+        overflow-y: auto;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #3a7ffd;
+        padding-bottom: 10px;
+      }
+
+      header h1 {
+        font-weight: 700;
+        color: #1a2b6d;
+      }
+
+      .kasir-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .kasir-info img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      /* WELCOME SECTION */
+      .welcome-box {
+        background: #f8fbff;
+        border: 1px solid #d0dcff;
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        margin-top: 30px;
+        box-shadow: 0 2px 6px rgba(58, 127, 253, 0.1);
+      }
+
+      .welcome-box h2 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+        color: #1a2b6d;
+      }
+
+      .welcome-box h2 span {
+        color: #3a7ffd;
+      }
+
+      .welcome-box p {
+        line-height: 1.8;
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      /* MOTIVATION CARD */
+      .daily-card {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background: white;
+        border: 1px solid #c8d6ff;
+        border-radius: 15px;
+        padding: 15px 20px;
+        margin-top: 25px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .daily-card img {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+
+      .daily-card h4 {
+        margin: 0;
+        font-weight: 600;
+        color: #1a2b6d;
+      }
+
+      .daily-card p {
+        margin: 5px 0;
+        font-size: 0.95em;
+        color: #555;
+      }
+
+      .daily-card button {
+        background-color: #3a7ffd;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        color: white;
+      }
+
+      .daily-card button:hover {
+        background-color: #1a2b6d;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Almeera Bakery" />
+        <h2>Almeera<br />Bakery</h2>
+      </div>
+
+      <a href="{{ url_for('data_produksi_kasir') }}">
+        <img src="{{ url_for('static', filename='images/menu1.png') }}" alt="Menu 1" />
+        Data Produksi
+      </a>
+      <a href="{{ url_for('Hitung_Total') }}">
+        <img src="{{ url_for('static', filename='images/menu4.png') }}" alt="Menu 2" />
+        Hitung Total & Bayar
+      </a>
+      <hr />
+      <a href="{{ url_for('logout') }}">
+        <img src="{{ url_for('static', filename='images/menu3.png') }}" alt="Menu 3" />
+        Keluar
+      </a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+      <header>
+        <h1>Dashboard Kasir</h1>
+        <div class="kasir-info">
+          <strong>kasir</strong>
+          <img src="{{ url_for('static', filename='images/bergas.png') }}" alt="Kasir" />
+        </div>
+      </header>
+
+      <div class="welcome-box">
+        <h2>SELAMAT DATANG, <span>KASIR HEBAT!</span></h2>
+        <p>
+          Setiap transaksi yang kamu catat adalah bagian dari keberhasilan toko
+          kita. Kerja kerasmu menjaga ketelitian dan senyum ramahmu membuat
+          pelanggan ingin kembali lagi.
+        </p>
+        <p>
+          Jadikan setiap hari kesempatan untuk melayani dengan hati, bekerja
+          dengan semangat, dan menunjukkan profesionalisme terbaik. 🌟
+        </p>
+      </div>
+
+      <div class="daily-card">
+        <img src="{{ url_for('static', filename='images/roti_bawah.png') }}" alt="Motivasi Kasir" />
+        <div>
+          <h4>Semangat Hari Ini!</h4>
+          <p>
+            "Keberhasilan besar datang dari pekerjaan kecil yang dilakukan
+            dengan penuh tanggung jawab."
+          </p>
+          <a href="{{ url_for('data_produksi_kasir') }}" class="serve-btn"
+            >💙 Let's Serve!</a
+          >
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
