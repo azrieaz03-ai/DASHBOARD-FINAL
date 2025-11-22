@@ -26,5 +26,3 @@ Aplikasi dapat diakses melalui:
 
 👨‍💻 Developer
 Azrie Sunata & Hendri Prisaputa Suntajaya — Industrial Engineering
-📧 Email: (optional kamu isi)
-📍 Indonesia
